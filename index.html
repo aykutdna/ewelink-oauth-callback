@@ -1,15 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>eWeLink OAuth Callback</title>
-</head>
-<body>
-  <h3>Authorization complete</h3>
-  <script>
-    // code parametresini ekranda göstermek için
-    const params = new URLSearchParams(window.location.search);
-    document.body.innerHTML += "<pre>" + params.toString() + "</pre>";
-  </script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>eWeLink OAuth Callback</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <p>Redirecting to app…</p>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+      const state = params.get("state");
+
+      if (code) {
+        const url = `ewelinkmvp://callback?code=${encodeURIComponent(code)}${state ? `&state=${encodeURIComponent(state)}` : ""}`;
+        window.location.replace(url);
+      } else {
+        document.body.innerHTML = "<pre>No code found.\n" + window.location.href + "</pre>";
+      }
+    </script>
+  </body>
 </html>
