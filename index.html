@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <title>eWeLink OAuth Callback</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta id="auto-redirect" http-equiv="refresh" content="0;url=ewelinkmvp://callback">
   </head>
   <body>
     <p>Redirecting to app…</p>
@@ -11,12 +12,20 @@
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
       const state = params.get("state");
-
-      if (code) {
-        const url = `ewelinkmvp://callback?code=${encodeURIComponent(code)}${state ? `&state=${encodeURIComponent(state)}` : ""}`;
-        window.location.replace(url);
+      const target = code
+        ? `ewelinkmvp://callback?code=${encodeURIComponent(code)}${state ? `&state=${encodeURIComponent(state)}` : ""}`
+        : null;
+      if (target) {
+        document.getElementById("auto-redirect").setAttribute("content", `0;url=${target}`);
+        window.location.replace(target);
       } else {
         document.body.innerHTML = "<pre>No code found.\n" + window.location.href + "</pre>";
+      }
+    </script>
+    <p><a id="fallback" href="#">Open in app</a></p>
+    <script>
+      if (typeof target !== "undefined" && target) {
+        document.getElementById("fallback").href = target;
       }
     </script>
   </body>
