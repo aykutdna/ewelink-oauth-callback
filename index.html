@@ -12,9 +12,12 @@
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
       const state = params.get("state");
+      const region = params.get("region");
+
       const target = code
-        ? `ewelinkmvp://callback?code=${encodeURIComponent(code)}${state ? `&state=${encodeURIComponent(state)}` : ""}`
+        ? `ewelinkmvp://callback?code=${encodeURIComponent(code)}${state ? `&state=${encodeURIComponent(state)}` : ""}${region ? `&region=${encodeURIComponent(region)}` : ""}`
         : null;
+
       if (target) {
         document.getElementById("auto-redirect").setAttribute("content", `0;url=${target}`);
         window.location.replace(target);
